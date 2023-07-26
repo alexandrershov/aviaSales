@@ -1,0 +1,52 @@
+.filter {
+  display: flex;
+  flex-direction: column;
+  width: 232px;
+  height: fit-content;
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+  padding: 20px 0px 20px 20px;
+}
+
+.title {
+  color: #4a4a4a;
+  font-family: Open Sans;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 12px; /* 100% */
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.filter-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-left: 0px;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.filter-list_text {
+  color: #4a4a4a;
+  font-family: Open Sans;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 153.846% */
+}
+
+.check {
+  color: #9abbce;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
