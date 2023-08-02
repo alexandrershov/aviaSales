@@ -1,0 +1,56 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap");
+
+.ticket-list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  gap: 20px;
+  animation-name: ticketList;
+  animation-duration: 2.5s;
+}
+
+.reserv-text {
+  color: #4a4a4a;
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 21px;
+  display: flex;
+  justify-content: center;
+}
+
+.error-message {
+  border: 1px solid red;
+  font-family: "Open Sans", sans-serif;
+  color: red;
+  border-radius: 5px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation-name: errormessage;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes errormessage {
+  from {
+    box-shadow: none;
+  }
+
+  to {
+    box-shadow: 1px 0px 36px 0px rgba(253, 0, 67, 0.2);
+  }
+}
+
+@keyframes ticketList {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
