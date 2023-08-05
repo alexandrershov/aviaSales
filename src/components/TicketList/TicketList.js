@@ -19,8 +19,7 @@ function TicketList() {
   const [currentTicket, setCurrentTicket] = useState(5);
   const [tickets, setTickets] = useState([]);
   const [load, setLoad] = useState(true);
-  const [error, setError] = useState(false);
-
+  // let errorMessage = 0;
   const toggleCheapTickets = useCallback((arr) => {
     const currentArr = arr.sort((a, b) => a.price - b.price);
     setTickets(currentArr);
@@ -47,27 +46,38 @@ function TicketList() {
     [toggleCheapTickets, toggleFastTickets, cheapTicket, fastTicket],
   );
 
-  const getTicketsElements = () => {
-    ticketService
-      .getTicketList()
-      .then( res => {
-        if (res?.error !== undefined) {
-          setError(true);
-          throw new Error(`Sry, data do not was loaded status: ${res.status}`);
-        };
-        const data = ticketService.transformTicket(res.tickets);
-        setElements(data);
-        if (!res.stop) return getTicketsElements();
-      })
-      .catch( err => console.log(err));
-  };
-
   useEffect(() => {
+    const getTicketsElements = () => {
+      let errorCount = 0; 
+    
+      const handleErrors = () => {
+        errorCount += 1;
+        console.log(errorCount); // специально оставил, чтобы смотреть сколько будет ошибок ПОДРЯД
+        if (errorCount >= 3) {
+          console.error('Произошло слишком много ошибок');
+          return;
+        }
+        getTicketsElements(); 
+      };
+    
+      ticketService
+        .getTicketList()
+        .then(res => {
+          if (res?.error !== undefined) {
+            handleErrors();
+            return;
+          }
+          const data = ticketService.transformTicket(res.tickets);
+          if (data?.length > 0) setElements([...elements, ...data]);
+        })
+        .catch( () => {
+          handleErrors();
+        });
+    };
     getTicketsElements();
     return () => {};
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [  ]);
-
+  }, [ elements ]);
 
   useEffect(() => {
     const filterTickets = () => {
@@ -122,12 +132,6 @@ function TicketList() {
   </Button>
   );
 
-  const errorMessage = (
-    <div className='error-message'>
-        Sry, all data do not was loaded !
-    </div>
-  );
-
   const ticketElements = tickets.slice(0, currentTicket).map( (e, i) => (
     <Ticket
     price={e.price}
@@ -141,10 +145,8 @@ function TicketList() {
 
     const renderLoading = load ? <Loading/> : ticketElements;
     const renderButtonElements = ticketElements?.length > 1 ? button : null;
-    const renderError = error ? errorMessage : null;
   return (
     <ul className="ticket-list">
-      {renderError}
       {renderLoading}
       {renderLoading?.length < 1 ? <span className='reserv-text'>Сорри по вашему запросу данные не найдены</span> : null}
       {renderButtonElements}

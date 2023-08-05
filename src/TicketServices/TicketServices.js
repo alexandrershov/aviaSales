@@ -1,6 +1,8 @@
-class TicketServices {
+  const peopleId = {
+    id: null
+  };
 
-  peopleID = null;
+class TicketServices {
 
   currentArr = [];
 
@@ -18,16 +20,20 @@ class TicketServices {
     const result = await this.getResults(
       'https://aviasales-test-api.kata.academy/search',
     );
-    this.peopleID = result.searchId;
+    peopleId.id = result.searchId;
   };
 
   getTicketList = async () => {
-    if (this.peopleID === null) await this.getSearchId();
+    if (peopleId.id === null) {
+      console.log('AAAAAAAAA');
+      await this.getSearchId();
+    };
     const results = await fetch(
-      `https://aviasales-test-api.kata.academy/tickets?searchId=${this.peopleID}`,
+      `https://aviasales-test-api.kata.academy/tickets?searchId=${peopleId.id}`,
     );
     if (!results.ok) return { error: true, status: results.status};
     const result = await results.json();
+    if (result.stop) {return {tickets: [], stop: true};};
     return result;
   };
 
